@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+
+    <script type="module">
+      import { CanvasTable } from './dist/index.js'
+
+      const products = [
+        {
+          qty: 1,
+          name: [
+            'AMD Ryzen™ 5 3600 | Ryzen™ Desktop Processors | AMD',
+            {
+              image: 'https://images-na.ssl-images-amazon.com/images/I/71WPGXQLcLL.__AC_SX300_QL70_ML2_.jpg',
+              width: 36,
+              height: 36
+            }
+          ],
+          retailerName: 'El-Badr Group',
+          price: 2000,
+          totalPrice: 2000
+        },
+        {
+          qty: 1,
+          name: [
+            'AMD Ryzen™ 5 3600 | Ryzen™ Desktop Processors | AMD',
+            {
+              image: 'https://images-na.ssl-images-amazon.com/images/I/71WPGXQLcLL.__AC_SX300_QL70_ML2_.jpg',
+              width: 36,
+              height: 36
+            }
+          ],
+          retailerName: 'El-Badr Group',
+          price: 2000,
+          totalPrice: 2000
+        },
+        {
+          qty: 1,
+          name: [
+            'AMD Ryzen™ 5 3600 | Ryzen™ Desktop Processors | AMD',
+            {
+              image: 'https://images-na.ssl-images-amazon.com/images/I/71WPGXQLcLL.__AC_SX300_QL70_ML2_.jpg',
+              width: 36,
+              height: 36
+            }
+          ],
+          retailerName: 'El-Badr Group',
+          price: 2000,
+          totalPrice: 2000
+        },
+        {
+          qty: 1,
+          name: [
+            'AMD Ryzen™ 5 3600 | Ryzen™ Desktop Processors | AMD',
+            {
+              image: 'https://images-na.ssl-images-amazon.com/images/I/71WPGXQLcLL.__AC_SX300_QL70_ML2_.jpg',
+              width: 36,
+              height: 36
+            }
+          ],
+          retailerName: 'El-Badr Group',
+          price: 2000,
+          totalPrice: 2000
+        }
+      ]
+      createTable(products, 2000).then(console.log)
+
+      async function createTable(products, buildTotalPrice) {
+        const columns = [
+          { title: 'Retailer', options: { textAlign: 'left' } },
+          { title: 'QTY', options: { textAlign: 'center' } },
+          { title: 'Name' },
+          { title: 'Price' },
+          { title: 'Total', options: { textAlign: 'right' } }
+        ]
+
+        const data = products.map(product => [
+          product.retailerName,
+          product.qty,
+          product.name,
+          `EGP ${product.price}`,
+          `EGP ${product.totalPrice}`
+        ])
+
+        const emptyRow = ['', '', '', '', '']
+        data.push(emptyRow, [
+          [
+            '',
+            {
+              image: 'https://raw.githubusercontent.com/SamyzKhalil/pcprices/master/src/assets/logo/default.svg',
+              scale: 0.3
+            }
+          ],
+          '',
+          '',
+          '',
+          [`EGP ${buildTotalPrice}`, { fontSize: 16, fontWeight: '500' }]
+        ])
+
+        const canvas = document.createElement('canvas')
+        canvas.width = 1080
+        canvas.height = 90 + data.length * 50
+
+        const config = {
+          columns,
+          data,
+          options: {
+            header: {
+              fontWeight: 'normal',
+              fontFamily: 'Inter Var',
+              color: '#808080'
+            },
+            cell: {
+              fontWeight: 'normal',
+              fontFamily: 'Inter Var',
+              color: '#000',
+              lineHeight: 1.5,
+              padding: 15
+            },
+            devicePixelRatio: 3,
+            fit: true,
+            fader: {},
+            borders: {
+              column: undefined,
+              header: undefined
+            },
+            padding: {
+              top: 35,
+              bottom: 35,
+              right: 30,
+              left: 30
+            }
+          }
+        }
+
+        const ct = new CanvasTable(canvas, config)
+        await ct.generateTable()
+
+        const blob = await new Promise(resolve => canvas.toBlob(resolve))
+        return URL.createObjectURL(blob)
+      }
+    </script>
+  </body>
+</html>
