@@ -279,9 +279,9 @@ export class CanvasTable {
         let cellValue, options
 
         if (Array.isArray(cellData)) {
-          cellValue = cellData[0].toString().split('\n')
+          ;[cellValue] = cellData[0].toString().split('\n')
           options = cellData[1]
-        } else cellValue = cellData.toString().split('\n')
+        } else [cellValue] = cellData.toString().split('\n')
 
         if (!rowIndex && header && header.background) {
           ctx.fillStyle = header.background
@@ -293,9 +293,11 @@ export class CanvasTable {
         const textAlign = columnOptions && columnOptions.textAlign ? columnOptions.textAlign : option.textAlign
         ctx.textAlign = textAlign
         if (outerWidth > computedOuterWidth) {
+          let imageWidth = (options && options.width) || 0
           const isFat = () =>
             ctx.measureText(cellValue.length > minCharWidth ? `${cellValue}${CanvasTable.ELLIPSIS}` : `${cellValue}.`)
-              .width >
+              .width +
+              imageWidth >
             computedOuterWidth - horizontalTotalPadding
           if (isFat()) {
             while (isFat()) {
