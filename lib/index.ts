@@ -328,7 +328,7 @@ export class CanvasTable {
           if (options.image) {
             let image = await this.loadImage(options.image)
             let w = options.width || options.scale * image.width
-            let h = options.height || options.scale * image.height
+            let h = (options.width * image.height) / image.width || options.scale * image.height
 
             ctx.drawImage(image, cellX, cellY - h / 2 + 6, w, h)
             cellX = cellX + w + 8
